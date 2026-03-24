@@ -1,0 +1,30 @@
+# 编译生成的文件
+*.o
+gateway/gateway
+service/service
+
+# 日志文件
+*.log
+gateway/logs/*
+service/logs/*
+!gateway/logs/.gitkeep
+!service/logs/.gitkeep
+
+# 照片文件
+service/photos/*
+!service/photos/.gitkeep
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+tmp/
+temp/

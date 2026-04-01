@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g
-LDFLAGS = -pthread
+CFLAGS = -Wall -Wextra -g -I$(INCLUDE_DIR) -I../lib/net/include
+LDFLAGS = -pthread -L../lib/net/lib -lnet_epoll
 
 SRC_DIR = src
 INCLUDE_DIR = include
@@ -11,15 +11,19 @@ SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/config.c $(SRC_DIR)/server.c $(SRC_DIR)/empl
 OBJS = $(SRCS:.c=.o)
 TARGET = service
 
-all: $(TARGET)
+LIBNET = ../lib/net/lib/libnet_epoll.a
+
+all: $(LIBNET) $(TARGET)
+
+$(LIBNET):
+	$(MAKE) -C ../lib/net
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-
-.PHONY: all clean
+	$(MAKE) -C ../lib/net clean
